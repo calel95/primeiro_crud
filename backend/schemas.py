@@ -22,7 +22,7 @@ class ProductGet(ProductBase):
         from_attributes = True
 
 class ProductUpdate(BaseModel):
-    name: Optional[str] = None
+    nome: Optional[str] = None
     descricao: Optional[str] = None
     preco: Optional[PositiveFloat] = None
     categoria: Optional[str] = None
