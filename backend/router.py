@@ -5,12 +5,12 @@ from typing import List
 
 router = APIRouter()
 
-@router.get("/produtos/", response_model=List[schemas.ProductGet])
+@router.get("/produtos/", response_model=List[schemas.ProductGet], description="Faz a leitura de todos os registros armazenados no banco")
 def read_all_products(db: Session = Depends(database.get_db)):
     products = controller.get_products(db)
     return products
 
-@router.get("/produtos/{produto_id}", response_model=schemas.ProductGet)
+@router.get("/produtos/{produto_id}", response_model=schemas.ProductGet, description="Faz a leitura de um produto")
 def read_one_product(produto_id: int, db: Session = Depends(database.get_db)):
     db_product = controller.get_product(db=db, produto_id=produto_id)
     if db_product is None:
@@ -18,7 +18,7 @@ def read_one_product(produto_id: int, db: Session = Depends(database.get_db)):
     return db_product
 
 @router.post("/produtos", response_model=schemas.ProductBase)
-def create_product(produto: schemas.ProductBase ,db: Session = Depends(database.get_db)):
+def create_product(produto: schemas.ProductBase ,db: Session = Depends(database.get_db), description="Faz a criação de um novo produto"):
     db_product = controller.create_product(db=db,produto=produto)
     return db_product
 
