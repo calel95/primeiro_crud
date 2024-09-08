@@ -1,49 +1,29 @@
 version: '3.8'
-# services:
-#   postgres:
-#     image: postgres:latest
-#     volumes:
-#       - postgres_data:/var/lib/postgres/data
-#     environment:
-#       POSTGRES_DB: mydatabase
-#       POSTGRES_USER: user
-#       POSTGRES_PASSWORD: password
-#     networks:
-#       - mynetwork
-
-#   backend:
-#     build:
-#       context: ./backend
-#       dockerfile: Dockerfile
-#     volumes:
-#       - ./backend:/app
-#     environment:
-#       DATABASE_URL: postgresql://user:password@postgres/mydatabase
-#     ports:
-#       - "8000:8000"
-#     depends_on:
-#       - postgres
-#     networks:
-#       - mynetwork
-      
-# networks:
-#   mynetwork: 
-
-# volumes:
-#   postgres_data:
 services:
-  app:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  sqlite:
+    image: nouchka/sqlite3:latest  # Exemplo de imagem SQLite
     volumes:
-      - ./sqlite_data:/app/sqlite_data  # Mapeia o diretório local para persistência
-    ports:
-      - "8000:8000"
+      - sqlite_data:/var/lib/sqlite/data
+    networks:
+      - mynetwork
+
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/app
-      
+      - ./sqlite_data:/app/sqlite_data  # Mapeia o diretório local para persistência
+    environment:
+      DATABASE_URL: sqlite:///app/sqlite_data/database.db  # Corrigido o caminho
+    ports:
+      - "8000:8000"
+    depends_on:
+      - sqlite
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork: 
+
+volumes:
+  sqlite_data:
