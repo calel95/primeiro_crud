@@ -17,6 +17,8 @@ class ProductBase(BaseModel):
 class ProductGet(ProductBase):
     id: int
     created_at: datetime
+    updated: bool | None = None
+    update_date: datetime | None
 
     class Config:
         from_attributes = True

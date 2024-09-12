@@ -2,6 +2,9 @@ import streamlit as st
 import requests
 import pandas as pd
 
+URL_BACKEND = "http://backend:8000/produtos/"
+URL_LOCAL = "http://127.0.0.1:8000/produtos/"
+
 st.set_page_config(layout="wide")
 
 #st.image("logo.png", width=200)
@@ -44,7 +47,8 @@ with st.expander("Adicionar um Novo Produto"):
         if submit_button:
             response = requests.post(
                 #"http://127.0.0.1:8000/produtos/",
-                "http://backend:8000/produtos/",
+                #"http://backend:8000/produtos/",
+                URL_LOCAL,
                 json={
                     "nome": nome,
                     "descricao": descricao,
@@ -57,7 +61,8 @@ with st.expander("Adicionar um Novo Produto"):
 # Visualizar Produtos
 with st.expander("Visualizar Produtos"):
     if st.button("Exibir Todos os Produtos"):
-        response = requests.get("http://backend:8000/produtos/")
+        response = requests.get(URL_LOCAL)
+        #response = requests.get("http://backend:8000/produtos/")
         #response = requests.get("http://127.0.0.1:8000/produtos/")
         if response.status_code == 200:
             product = response.json()
@@ -72,6 +77,8 @@ with st.expander("Visualizar Produtos"):
                     "categoria",
                     "email_fornecedor",
                     "created_at",
+                    "updated",
+                    "update_date"
                 ]
             ]
 
@@ -84,7 +91,8 @@ with st.expander("Visualizar Produtos"):
 with st.expander("Obter Detalhes de um Produto"):
     get_id = st.number_input("ID do Produto", min_value=1, format="%d")
     if st.button("Buscar Produto"):
-        response = requests.get(f"http://backend:8000/produtos/{get_id}")
+        response = requests.get(f"{URL_LOCAL}{get_id}")
+        #response = requests.get(f"http://backend:8000/produtos/{get_id}")
         #response = requests.get(f"http://127.0.0.1:8000/produtos/{get_id}")
         if response.status_code == 200:
             product = response.json()
@@ -99,6 +107,8 @@ with st.expander("Obter Detalhes de um Produto"):
                     "categoria",
                     "email_fornecedor",
                     "created_at",
+                    "updated",
+                    "update_date"
                 ]
             ]
 
@@ -111,7 +121,8 @@ with st.expander("Obter Detalhes de um Produto"):
 with st.expander("Deletar Produto"):
     delete_id = st.number_input("ID do Produto para Deletar", min_value=1, format="%d")
     if st.button("Deletar Produto"):
-        response = requests.delete(f"http://backend:8000/produtos/{delete_id}")
+        response = requests.delete(f"{URL_LOCAL}{delete_id}")
+        #response = requests.delete(f"http://backend:8000/produtos/{delete_id}")
         #response = requests.delete(f"http://127.0.0.1:8000/produtos/{delete_id}")
         show_response_message(response)
 
@@ -148,7 +159,8 @@ with st.expander("Atualizar Produto"):
                 update_data["categoria"] = new_categoria
 
             if update_data:
-                response = requests.put(f"http://backend:8000/produtos/{update_id}", json=update_data)
+                response = requests.put(f"{URL_LOCAL}{update_id}", json=update_data)
+                #response = requests.put(f"http://backend:8000/produtos/{update_id}", json=update_data)
                 #response = requests.put(f"http://127.0.0.1:8000/produtos/{update_id}", json=update_data)
                 show_response_message(response)
             else:

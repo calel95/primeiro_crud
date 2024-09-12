@@ -12,4 +12,5 @@ class ProductModel(Base):
     categoria = Column(String, index=True)
     email_fornecedor = Column(String, index=True)
     created_at = Column(DateTime(timezone=True), default=func.now(), index=True)
-
+    updated = Column(Boolean, default=False)
+    update_date = Column(DateTime)

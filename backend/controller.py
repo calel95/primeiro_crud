@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 from . import schemas
 from . import models
 
@@ -31,6 +32,8 @@ def update_product(db: Session,produto_id: int, produto: schemas.ProductUpdate):
         db_product.categoria = produto.categoria
     if produto.email_fornecedor is not None:
         db_product.email_fornecedor = produto.email_fornecedor
+    db_product.updated = True
+    db_product.update_date = func.now()
     db.commit()
     db.refresh(db_product)
     return db_product
