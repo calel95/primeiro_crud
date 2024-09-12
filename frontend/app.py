@@ -7,7 +7,7 @@ URL_LOCAL = "http://127.0.0.1:8000/produtos/"
 
 st.set_page_config(layout="wide")
 
-#st.image("logo.png", width=200)
+st.image("logo.png", width=500)
 
 st.title("Gerenciamento de Produtos")
 
@@ -125,6 +125,7 @@ with st.expander("Deletar Produto"):
         #response = requests.delete(f"http://backend:8000/produtos/{delete_id}")
         #response = requests.delete(f"http://127.0.0.1:8000/produtos/{delete_id}")
         show_response_message(response)
+
 
 # Atualizar Produto
 with st.expander("Atualizar Produto"):
